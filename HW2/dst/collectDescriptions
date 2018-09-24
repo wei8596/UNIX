@@ -1,0 +1,1 @@
+mkdir ~/Descriptions 2> /dev/null && cp `find ~/start/ -name ".description*"` ~/Descriptions

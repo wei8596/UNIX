@@ -1,0 +1,120 @@
+% ~/game5
+Computer room
+You are in a computer room.  It seems like most of the equipment has
+been removed.  There is a VAX 11/780 in front of you, however, with
+one of the cabinets wide open.  A sign on the front of the machine
+says: This VAX is named ‘pokey’.  To type on the console, use the
+‘type’ command.  The exit is to the east.
+There is a shiny brass key here.
+>e
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>n
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+There is a lamp nearby.
+There is a bus driver's license here.
+There is a silver bar here.
+>w
+Post office
+You are near the remains of a post office.  There is a mail drop on the
+face of the building, but you cannot see where it leads.  A path leads
+back to the east, and a road leads to the north.
+>n
+Main-Maple intersection
+You are at the intersection of Main Street and Maple Ave.  Main street
+runs north and south, and Maple Ave runs east off into the distance.
+If you look north and east you can see many intersections, but all of
+the buildings that used to stand here are gone.  Nothing remains except
+street signs.
+There is a road to the northwest leading to a gate that guards a building.
+>nw
+Museum entrance
+You are in front of the Museum of Natural History.  A door leads into
+the building to the north, and a road leads to the southeast.
+>n
+Museum lobby
+You are in the main lobby for the Museum of Natural History.  In the center
+of the room is the huge skeleton of a dinosaur.  Doors lead out to the
+south and east.
+There is a dinosaur bone here.
+>e
+Geological display
+You are in the geological display.  All of the objects that used to
+be on display are missing.  There are rooms to the east, west, and
+north.
+>e
+Maintenance room
+You are in some sort of maintenance room for the museum.  There is a
+switch on the wall labeled ‘BL’.  There are doors to the west and north.
+There is a packet of nitric acid here.
+>x switch
+I see nothing special about that.
+>press switch
+The button is now in the on position.
+>w
+Geological display
+>n
+Marine life area
+You are in the marine life area.  The room is filled with fish tanks,
+which are filled with dead fish that have apparently died due to
+starvation.  Doors lead out to the south and east.
+The room is lit by a black light, causing the fish, and some of
+your objects, to give off an eerie glow.
+There is a glass jar here.
+There is a valuable ruby here.
+>get all
+A glass jar: Taken.
+A ruby: Taken.
+>s
+Geological display
+>n
+Marine life area
+The room is lit by a black light, causing the fish, and some of
+your objects, to give off an eerie glow.
+>s
+Geological display
+>w
+Museum lobby
+There is a dinosaur bone here.
+>x bone
+I see nothing special about that.
+>get bone
+A bone: Taken.
+>e
+Geological display
+>n
+Marine life area
+The room is lit by a black light, causing the fish, and some of
+your objects, to give off an eerie glow.
+>x bone
+In this light you can see some writing on the bone.  It says:
+For an explosive time, go to Fourth St. and Vermont.
+>drop bone
+Done.
+>x bone
+In this light you can see some writing on the bone.  It says:
+For an explosive time, go to Fourth St. and Vermont.
+>s
+Geological display
+>e
+Maintenance room
+There is a packet of nitric acid here.
+>press switch
+The button is now in the off position.
+>press
+You must supply an object.
+>press acid
+You cannot press that.
+>switch acid
+You cannot press that.
+>w
+Geological display
+>n
+Marine life area
+There is a dinosaur bone here.
+>x bone
+I see nothing special about that.
+>quit

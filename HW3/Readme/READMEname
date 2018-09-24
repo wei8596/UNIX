@@ -1,0 +1,126 @@
+This file describes the behavior of the "name" file.
+It receives one parameter, which is the name of an object.
+It prints the full noun phrase for that object (which usually means adding
+either an "a" or an "an" on the front).
+To understand what it does, look at the following:
+% ./name ruby ; echo
+a ruby
+% name egg ; echo
+an egg
+%
+
+See? Objects that begin with a vowel get "an". See also that the this script
+does not put a newline at the end (which is the reason that the echoes were
+used, above.) See?:
+% ./name ruby ; name egg 
+a rubyan egg%
+
+OK, now to make it more complicated. Although the above behavior for "ruby" and
+"egg" are typical, there are exceptions in the dunnet game. First look at the
+"silver":
+
+% name silver ; echo
+a silver bar
+
+Silver is the only object that gets a word put after it. (You might wonder why
+we called it "silver" rather than bar. The answer is that the actual dunnet
+game also has a gold bar -- so "bar" is not able to identify the object.)
+
+Another complication is "coins":
+
+% name coins ; echo
+some coins
+
+Coins is the only plural object in our game.
+
+So, to be clear, here is the behavior for all 11 relevant objects:
+% echo; name acid; echo; name bone; echo; name bus; echo; name coins; echo; name egg; echo; name glycerine; echo; name jar; echo; name key; echo; name lamp; echo; name license; echo; name ruby; echo; name silver
+an acid
+a bone
+a bus
+some coins
+an egg
+a glycerine
+a jar
+a key
+a lamp
+a license
+a ruby
+a silver bar
+%
+
+In the above, "acid" and "glycerine" do not sound "right". In fact, in the real
+game, they show as "a packet of nitric acid" and "a packet of glycerine." I
+have not followed the game here, however, just to simplify your work a little.
+(If you are wondering, in the real game, the acid and glycerine are eventually
+used to make nitroglycerin -- but we won't do that.) 
+
+There is another feature of "name:" that it takes an optional -c flag that
+capitalizes the phrase. See?:
+% ./name -c ruby ; echo
+A ruby
+% name egg -c ; echo
+An egg
+% name -c coins ; echo
+Some coins
+% name coins ; echo
+some coins
+% name silver -c ; echo
+A silver bar
+% name silver ; echo
+a silver bar
+%
+
+Notice that the flag can be either the first or the second argument, and that
+it is optional.
+
+Finally, I will say that you don't need to test strange cases like: other
+flags, no arguments or extra arguments.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Line by line description:
+
+Line 1:  #!/usr/bin/tcsh (Or #!/bin/tcsh if your system uses it instead.)
+
+Line 2: if ( __1__ ) then
+        __1__: This test to see if the first parameter is -c. But take note of
+	       slides 41-49 of Lecture 4.
+
+Line 3: This line creates a boolean, using the technique from slide #30 of
+        Lecture 4. This boolean indicates that the -c flag was used.
+
+Line 4: shift
+        This line will cause the second argument to become the first. And,
+	since you've been told that you don't need to worry about erroneous
+	input, we therefore know that the newly-made-first parameter is the
+	object that we need to name.
+	
+Line 5: else if ( __2__ ) then
+        __2__: This is like __1__ on line 2, except that it tests the second
+	       parameter.
+	       
+Line 6: This is the same as line 3.
+
+Line 7: endif
+
+Line 8: if ( __3__ ) then
+        __3__: This test the boolean you made above, to see if we need to
+	       capitalize the first letter.
+
+Lines 9-X: These lines print the correct one of the following 4 possibilities:
+           "Some", "A", "some", or "a".
+	   Note: "An" and "an" are not options, because the "n" will be added
+	         after the "A" or "a", later on in this script.
+
+Line X+1: if ( __4__ ) then
+        __4__: This test to see if the object begins with one of the 5 vowels.
+
+Line X+2: If it begins with a vowel, then print "n " and also the object name.
+
+Line X+3: else
+
+Line X+4: Prints " " and also the object name.
+
+Line X+5: If the object is "silver", then print " bar"
+
+Line X+6: endif

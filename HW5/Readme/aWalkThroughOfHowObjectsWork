@@ -1,0 +1,135 @@
+% ~/game5
+Computer room
+You are in a computer room.  It seems like most of the equipment has
+been removed.  There is a VAX 11/780 in front of you, however, with
+one of the cabinets wide open.  A sign on the front of the machine
+says: This VAX is named ‘pokey’.  To type on the console, use the
+‘type’ command.  The exit is to the east.
+There is a shiny brass key here.
+>examine key
+I see nothing special about that.
+>look key
+I see nothing special about that.
+>x key
+I see nothing special about that.
+>x computer
+I see nothing special about that.
+>x bin
+I do not see that here.
+>x abc
+I don't know what that is.
+>e
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>s
+You can't go that way.
+>e
+Mailroom
+You are in a mailroom.  There are many bins where the mail is usually
+kept.  The exit is to the west.
+>x bin
+All of the bins are empty.  Looking closely you can see that there
+are names written at the bottom of each bin, but most of them are
+faded away so that you cannot read them.  You can only make out three
+names:
+                   Jeffrey Collier
+                   Robert Toukmond
+                   Thomas Stock
+
+>x bins
+All of the bins are empty.  Looking closely you can see that there
+are names written at the bottom of each bin, but most of them are
+faded away so that you cannot read them.  You can only make out three
+names:
+                   Jeffrey Collier
+                   Robert Toukmond
+                   Thomas Stock
+
+>w
+Old Building hallway
+>l
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>x
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>get key
+I do not see that here.
+>w
+Computer room
+There is a shiny brass key here.
+>get key
+A brass key: Taken.
+>get computer
+You cannot take that.
+>i
+You currently have:
+A brass key
+>e
+Old Building hallway
+>get key
+I do not see that here.
+>x key
+I see nothing special about that.
+>i
+You currently have:
+A brass key
+>drop key
+Done.
+>drop key
+You don't have that.
+>i
+You currently have:
+>l
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+There is a shiny brass key here.
+>e
+Mailroom
+>w
+Old Building hallway
+There is a shiny brass key here.
+>get all
+A brass key: Taken.
+>get all
+Nothing to take.
+>drop all
+I don't know what that is.
+>i
+You currently have:
+A brass key
+>n
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+There is a lamp nearby.
+There is a bus driver's license here.
+There is a silver bar here.
+>take lamp
+A lamp: Taken.
+>i
+You currently have:
+A brass key
+A lamp
+>get all
+A license: Taken.
+A silver bar: Taken.
+>l
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+>get all
+Nothing to take.
+>get egg
+I do not see that here.
+>get abc
+I don't know what that is.
+>n
+You can't go that way.
+>hello
+I don't understand that.
+>quit

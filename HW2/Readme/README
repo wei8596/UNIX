@@ -1,0 +1,384 @@
+                            UNIX System Programming
+                            Programing Assignment #2
+
+Due: Monday, March 26  at  11:59 pm.
+
+Submission method: You will post to the course website, just like the previous
+                   assignment. 
+
+Submission rules: I REQUIRE you to FOLLOW THESE RULES:
+
+                  1. Submit one file named "<your student ID>.PA2.tar"
+                     It will contain the 4 files described below:
+                        collectDescriptions
+			PA2.tar
+			play
+			SeenObjects
+		     
+                  2. Submissions made after the deadline will be ignored.
+                     (That means: no late submissions on this assignment.)
+                     (By the way, if you don't turn in your assignments, you
+                      will probably Fail The Class. That's a Fact. So start
+                      early and ask questions.)
+                  
+                  This is a large class. Unless each of you follows the above
+                  rules, the TAs' work becomes so hard. So I INSIST that you 
+                  FOLLOW the above rules. If you don't, we won't accept your 
+                  homework.
+
+                  If you have questions about these rules, you may post your 
+                  questions to the course website.
+
+
+Getting help:   - The Professor has office hours on Monday from 12:30-2:30, 
+                  and on Friday from 10:00-12:00, in room 9037.  He can also 
+                  be reached by email.
+                - The TAs are also available to answer your questions.
+                - Questions about the assignment can be posted to the 
+                  Discussion Forum.
+                - You may also discuss the ideas of the assignment with your
+                  classmates. Such discussions can be quite helpful to your 
+                  learning -- IF you ONLY talk about the general concepts of
+		  the steps of the assignment.
+		  - If, however, you tell other students the specific details
+		    of your implementation, then you are not helping each other
+		    to learn; you are just doing the work for them.
+                    In other words, you are cheating. You CANNOT show another
+		    student ANY part of the answer to the assignment.
+
+Cheating policy:  We encourage students to form study groups. But this does not
+                  mean sharing code. If students are found to be sharing work,
+		  they can receive a 0 for the entire course, or worse.
+                  It is cheating to let another student see your work, or to 
+                  let them look over your shoulder when your code is on the
+		  screen.
+		  A good way to know you cheated: if you have code that is in
+		  your solution just because another student told you to put
+		  it there, but you don't actually understand it.
+		  If you are still unsure, you can ask the TA for more
+		  explanation.
+                  We always look for evidence of cheating, so don't do it.
+                  (In any event, even if you do not get caught, those who 
+                  copy the homework will not learn the material, so they 
+                  will fail the exam.)
+
+Most Important    The programming assignments are a large part of the grade.
+Things to Know:	  This large point value means that, if you don't do them, you
+		  will fail.
+		  The large point value also explains why the policy against
+		  cheating is strictly enforced.
+		  
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,
+: Part 1. Provided files :
+''''''''''''''''''''''''''
+
+If you are reading this file, then you must have un-tarred the ProgAssign2.tar
+file. Looking in the directory containing this README file, you will find:
+
+% ls
+house  PA1.tar  PA2overview  README
+
+The README file is this file you are reading now.
+
+The PA1.tar file is the solution to first programming assignment.
+
+The PA2overview file is the file that I posted earlier, but with some small
+changes (which you can identify by using diff). You should read that file
+before continuing on with reading this file...
+
+... Well, now that you've read that file, you understand that the final file,
+house, is used to play the actual dunnet game.
+
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+: Part 2. Creating a new tar file :
+'''''''''''''''''''''''''''''''''''
+
+In the first assignment, we created the rooms. But we had not learned about
+links. Now we know about them (Lecture #2, slides 59 & 73).
+
+Well, the game has two locations which you can enter from either the east or
+the south. Those locations are the directories containing the glycerin and
+containing the bus. If you look at lecture #1, slide #85, you will see that
+these two rooms currently can only be entered from the east.
+
+To fix this, you need to add 4 new links: north into these two locations and
+south out of these locations. For variety, you must use relative addressing
+for three of these links and absolute addressing for one link (any one of them
+you want). (Now, it is true that the absolute link won't be portable, but I
+want you to practice a long absolute address.)
+
+Once You've added these four links, tar it up as a replacement for the PA1.tar
+file. This new tar file, PA2.tar, will be one of the files that you'll submit.
+
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+: Part 3. Figuring out the wildcard pattern :
+'''''''''''''''''''''''''''''''''''''''''''''
+
+The assignment involves creating a series of alias commands (see Lecture #1,
+slide #66).
+
+The assignment also needs to display certain objects, but not others. In the
+first room, for example, there is a key and a computer, but you only get the
+display message:
+                  Here there is:
+                   key
+
+So, how does that work? Well, let's remember what the objects are. Here is
+the directory that I gave you for the first homework (but I've added the
+"computer" file an the "bin" file, which goes in the same place as "bins"):
+
+% ls PA1
+acid   coins         descriptionE  descriptionK  egg        lamp     switch
+bin    computer      descriptionF  descriptionL  fish       license  tank
+bins   descriptionA  descriptionG  descriptionM  gate       mail     tanks
+bone   descriptionB  descriptionH  descriptionN  glycerine  nitric
+bus    descriptionC  descriptionI  descriptionO  jar        ruby
+cliff  descriptionD  descriptionJ  dinosaur      key        silver
+%
+
+To begin, let's get rid of those descriptions (but "dinosaur" also begins with
+"d"):
+% ls [^d]* di*
+acid  bone   coins     egg   glycerine  lamp     nitric  switch
+bin   bus    computer  fish  jar        license  ruby    tank
+bins  cliff  dinosaur  gate  key        mail     silver  tanks
+% mkdir objectsOnly
+% ls [^d]* di* > objectsOnly
+% cd objectsOnly
+% ls
+acid  bone   coins     egg   glycerine  lamp     nitric  switch
+bin   bus    computer  fish  jar        license  ruby    tank
+bins  cliff  dinosaur  gate  key        mail     silver  tanks
+%
+
+Now, the question is: if the above is the complete list of all of the objects
+in the part of the game we are implementing, which ones display and which ones
+don't? Well, I've played the actual game and determined the following:
+
+These display:
+acid  bus    egg        jar  lamp     ruby
+bone  coins  glycerine  key  license  silver
+
+And these don't:
+bin   cliff     dinosaur  gate  nitric  tank
+bins  computer  fish      mail  switch  tanks
+
+So: First, create an objectsOnly directory like I did, above.
+    Second, ask yourself: "How can we create a wildcard pattern (see Lecture 1,
+                           slides 33-35) that displays all of the 12 objects in
+                           the 1st set and none of the 12 objects in the 2nd 
+                           set?"
+    Third, get the answer:"There is no ONE pattern that can do it. But you can
+                           do it with TWO patterns."
+
+But what does that all mean? Well consider the following, different example:
+% ls
+ab1  ab2  ac1  ac2  bb1  bb2  bc1  bc2
+%
+
+Suppose we want to show only these: ab2, ac2, bb2 and bc2. Then we could type:
+% ls *b*2 a[^b]2
+ab2  ac2  bb2  bc2
+%
+
+But notice the problem if we tried this instead (ab2 wrongly prints twice):
+% ls *b*2 a*2
+ab2  ab2  ac2  bb2  bc2
+%
+
+OK. So you want to figure out how to get the first 12 objects and none of the
+last 12, in just two patterns.
+
+You'll need these two patterns for the game. But it is difficult enough that
+I want you to do it first. So the second file that you will include in your
+submission will be called "SeenObjects", and it'll have one line: "ls ___ ___"
+
+When you run "~/SeenObjects" from within the objectsOnly directory, you should
+see the 12 correct objects.
+
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+: Part 4. Creating a directory containing all descriptions :
+''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+
+In the newly provided PA1.tar file that I am giving you, there's a .description
+file in each directory. Now here, I want to give you a chance to use the find
+command (Lecture #2,Slide #76-80) and the `...` command (Lecture #2,Slide #23).
+
+The goal here is to create a script, called collectDescriptions, that:
+1. Makes a directory (named whatever you like) inside of the home directory.
+2. If step 1 fails then the directory was already made, so don't do the rest.
+3. Otherwise, we now want to copy all of the descriptions over to this new
+   directory.
+   - But how?
+     - Well, "cp" can copy things.
+       - But the problem here is that the things we want to copy are coming
+         from different directories.
+	 - Well, "find" can locate those things.
+	   - But find's output goes to the screen, which isn't the right place.
+	     - Well that's what `...` is for.
+	     
+So the effect of running your ~/SeenObjects" from within the objectsOnly directory, you shouldcollectDescriptions script is that all of the
+.descriptions will be collected together into the directory that you had made.
+There should never be any printed output from your script.
+
+
+,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+: Part 5. Line-by-line summary :
+''''''''''''''''''''''''''''''''
+
+The core of the assignment involves creating a series of alias commands (see 
+Lecture #1, slide #66). These go into a file, "play". We will now look at them,
+one-by-one:
+
+Line 1: alias items='___'
+        This alias is responsible for the part that displays the objects that
+        are present. For example:
+                                  Here there is:
+                                   key
+		              or:
+                                  Here there is:
+                                  lamp  license  silver
+
+        But remember that there are other locations, like the mailroom,
+	where there are no displayed objects. In those cases, we don't print
+	anything, including the "Here there is:" line.
+
+
+        So, how to do it? That's up to you, but let me give you a hint by
+	pointing out some things:
+	1. We've learned command coordination in Lecture #2, slides #94-112.
+	   So we can make a command execute conditionally on the basis of
+	   whether a previous command succeeded (&&) or failed (||).
+
+        2. The ls command "fails" if it doesn't find a match.
+           % ls
+           cat  dog  hamster
+           % ls *a* || echo failed
+           cat  hamster
+           % ls x || echo failed
+           ls: cannot access 'x': No such file or directory
+           failed
+	   %
+	   
+        3. The output of the ls command can be redirected to /dev/null . (See
+	   Lecture #2, Slides 4-5, 41-43.)
+
+        4. If the ls has more than one argument, it fails if ANY don't match:
+           % ls x *a* || echo failed
+           ls: cannot access 'x': No such file or directory
+           cat  hamster
+           failed
+	   %
+
+        5. We want to print "Here there is:" if EITHER wildcard pattern has a
+	   hit.
+
+        6. You can print a string with "echo"
+
+        7. You can display the matching object list with ls.
+
+        8. You can redirect only error messages to /dev/null (Lecture #2,
+	   Slide #5)
+
+
+Line 2: alias see='__1__;__2__;items;__3__;__4__'
+        This alias is responsible for displaying the message whenever you enter
+	a room. Whenever means: both the first time and later times.
+
+        It is five separate commands:
+
+        __1__ This part displays the description file in the current directory.
+	      (After the first time, that file will be just one line long.) 
+
+        __2__ This part replaces the .description file in the current directory
+	      with just the 1st line. Use "head" for this (Lecture #1,Slide#11)
+
+              But there is a problem: if you try to use the same file for input
+	      and output to the head command, it doesn't work.
+	      So, instead, we need to take input from another file, the one in
+	      the directory you created with the collectDescriptions script.
+
+              But there is another problem: that directory has all of the
+	      descriptions, so how to get the right one? Well, the name of the
+	      description file in the current directory is the name that you
+	      want to get from the other directory.
+
+              But how to select that specific file? The answer is to use
+	      `ls ...`.  In this case, the `...` is used as part of the path. 
+
+        At this point, the display is done. But we want to do two more things,
+	for reasons that we'll understand below.
+
+        __3__ This part removes a temp file (a file that gets made by aliases
+	      below). But you need to use the -f flag.
+	      
+        __4__ This part makes the path physical. What I mean is: If you "cd"
+	      into a link to a directory and then type "pwd", the path that
+	      prints will have the symbolic link. But if you type "pwd -P"
+	      then you'll get the true path.
+	      So "pwd -P" is the key to finding the path. so just combine that
+	      with `...` and "cd".
+	
+Line 3: alias look='__1__;items'
+
+        __1__ This displays the description from the directory made by the
+	      collectDescriptions script. The method of identifying the correct
+	      file in that directory is the same as was used for __2__ in
+	      line 2.
+
+Line 4: alias nw='__1__;see'
+
+        __1__ This goes to the northwest. If it fails, nothing should happen,
+	      including that there should be no error display.
+
+              (By the way, we know that there is only place where you can move
+	      northwest.)
+	      
+Line 5: alias se='__1__; __2__; see'
+
+        __1__ This uses "basename" (Lecture #2, Slide #32) to identify the
+	      current directory's name put it in a temp file (the temp file
+	      that was removed by __3__ in Line 2).
+
+        __2__ This uses fgrep (Lecture #2, Slides #89-91) to see if the current
+	      directory (stored in the temp file) is "nw".
+	      But we don't want to see any output.
+	      Instead we conditionally decide to execute cd .. if it is so.
+
+             (By the way, since we know that there is only place where you can
+	     move northwest, we therefore know that the only way to move
+	     southeast is to be in the nw directory.)
+
+             Note: Line 4 only did "cd nw"; it never tried "cd ..". This was
+	           because our game has no directory named "se".
+		   But Line 5 only does "cd .."; we never tries "cd se". This
+		   is for the same reason: our game has no "se" directory.
+         
+Line 6: alias e='__1__; see'
+
+       __1__ This is basically a combination of lines 4 & 5, but for "e".
+	     The reason for it being a combination is that the e could be
+	     achieved by "cd e" or "cd ..", depending on the current location.
+
+             The logic is: Try to "cd e" (analogous to Line 4) but, if it fails
+	     then see if you are in a "w" directory (analogous to Line 5).
+
+Line 7: alias w='...; see'  # Similar to Line 6
+Line 8: alias n='...; see'  # Similar to Line 6
+Line 9: alias s='...; see'  # Similar to Line 6
+
+Line 10: cd;__1__;__2__;cd PA2/start; ~/collectDescriptions; see
+         Note that this is no an alias.
+
+         __1__ This removes the start directory, whether empty or not, without
+	       any error message.
+	 __2__ This expands the PA2.tar file that you created earlier, in order
+	       to recreate the PA2 directory that __1__ has just destroyed.

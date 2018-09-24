@@ -1,0 +1,86 @@
+This file tests the situation of an object, and returns the corresponding code:
+
+1- No object given.
+2- Object is present in the inventory directory.
+3- Object is present in the current directory but is not an object you can get.
+4- Object is present in the current directory and is an object you can get.
+5- Object isn't present in the current directory, but is an object in the game.
+6- Requested object is not an object in the game.
+
+
+Let's see it in action:
+
+% cd ~
+% rm -rf PA3
+% tar -xvf PA3.tar >& /dev/null
+% cd ~/PA3/start
+% ~/objecttest ; echo $?
+1
+% ~/objecttest key ; echo $?
+1
+% ~/objecttest get key ; echo $?
+3
+%
+
+Note, above, that the objecttest script expects two parameters. The first
+argument is ignored. The second is the object you want to test. (So, why
+do it this way? Well, it works better with the script that you'll write
+in the next programming assignment.) Let's look at some more:
+
+% ~/objecttest get computer ; echo $?
+4
+% ~/objecttest get bin ; echo $?
+5
+% ~/objecttest get abc ; echo $?
+6
+% mv key ~/PA3/inventory/
+% ~/objecttest get key ; echo $?
+2
+%
+
+Now, in the above, note that there is a PA3/inventory directory that unpacks
+with the tar file. When the game begins, that inventory is empty (except for
+a ".bus" file that is used in the display script that you'll write).
+In the next programming assignment, you'll implement the "get" command; but,
+for now, the only way for an object to be in the inventory is for you to use
+"mv" (like I did above).
+
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Line by line description:
+
+Line  1: #!/usr/bin/tcsh (Or #!/bin/tcsh if your system uses it instead.)
+
+Lines 2-5:
+set examinable = ( "acid" "bin" "bins" "bone" "bus" "cliff" "coins" "computer"\
+                   "dinosaur" "egg" "fish" "gate" "glycerine" "jar" "key" \
+		   "lamp" "license" "mail" "nitric" "ruby" "silver" "switch" \
+		   "tank" "tanks" )
+
+Line  6: if ( __1__ ) exit 1
+         __1__: This tests if there are fewer than 2 parameters.
+         
+Line 7:foreach i ( $examinable )
+
+Line 8:  if ( $i == $2 ) then
+
+Line 9:    if ( __2__ ) exit 2
+           __2__: This test whether the second parameter is a file in the
+	          inventory directory.
+
+Line 10:    if ( ( __3__ ) && ( __4__ ) && ( __5__ ) ) exit 3
+            __3__: This test if the item is in the current directory
+	    __4__ & __5__: These are wildcard matches. Together, they test
+	                   that the item is one of these 12 things:
+                             acid, bone, coins, egg, glycerine, jar,
+			     key, lamp, license, nitric, ruby, silver
+
+Line 11:    if ( __6__ ) exit 4
+           __6__: This test whether the second parameter is a file in the
+	          current directory.
+
+Line 12:    exit 5
+Line 13:  endif 
+Line 14:end
+Line 15:exit 6

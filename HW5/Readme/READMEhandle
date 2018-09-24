@@ -1,0 +1,264 @@
+This homework will involve creating two files: handle.awk and game5. This
+current document describes only the design of handle.awk.
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+Included in this directory is a file PA5.tar. This file defines the rooms and
+ojects. It also gives you some scripts. Lets unpack it (assuming that you are
+in the directory of this present README file:
+% ls
+aWalkThroughOfHowObjectsWork   PA5.tar       READMEwalkthroughs
+aWalkThroughOfHowTheBoneWorks  README 
+aWalkThroughOfHowTheBusWorks   READMEhandle  
+% cp PA5.tar ~
+% cd ~
+% tar -xvf PA5.tar
+% cd ~/PA5/scripts/
+display  handle  handleworx  name.sed  objecttest
+%
+
+- Notice that "display", "name.sed", and "objecttest" are files we created in
+  programming assignments 3 and 4. As far as this present READMEhandle file is
+  concerned, only "objecttest" is relevant. If you have forgotten, its purpose
+  was to return a code that indicates where the object is and what type of
+  object it is.
+
+- The "handle" file is a C-shell script that we'll describe later in this
+  README file.
+
+- The "handleworx" file is a C-shell script that uses "objecttest" to determine
+  how to handle a command supplied to this script as input arguments. Let's see
+  an example:
+
+% cd ~/PA5/start;
+% ~/PA5/scripts/handleworx x computer
+I see nothing special about that.
+
+See what it did? It executed the x (ie, eXamine) command on the computer
+object. In this case, the right behavior was to display the contents of the
+file named "computer". This was the right thing to do because we are in the
+room with the computer. And the way that we learned that we are in that room
+is by seeing that "objecttest" returns code #4 (a fact that we can determine
+by observing the details objecttest file). (Code #4 indicates a file that is
+in your room, but which you cannot pick up.)
+
+Let's try to examine some more things:
+% ~/PA5/scripts/handleworx x key
+I see nothing special about that.
+% ~/PA5/scripts/handleworx x egg
+I do not see that here.
+% ~/PA5/scripts/handleworx x egggg
+I don't know what that is.
+%
+
+So it all makes sense. Let's try taking some things:
+% ~/PA5/scripts/handleworx take computer
+You cannot take that.
+% ~/PA5/scripts/handleworx take bins
+I do not see that here.
+% ~/PA5/scripts/handleworx take egg
+I do not see that here.
+% ~/PA5/scripts/handleworx take key
+% ~/PA5/scripts/handleworx take key
+I do not see that here.
+%
+
+So here we see that the appropriate messages are displayed. We also see that
+no error was displayed when we took the key. That is because there was no
+error. In fact, we actually did take the key. That is why we got an error
+when we tried to pick it up again -- it wasn't in the room anymore, it was
+in our inventory.
+
+Now, you might notice that a message should actually have been printed when
+the key was taken, "A brass key: Taken." Well, that is true, but it is not
+the job of handleworx to print that. Its job is to print errors and implement
+the commands.
+
+At this point, it is time to ask, "which commands?" The answer is these four
+commands: "x", "take", "drop", "press". Now, in the game, these four commands
+all have synonyms ("look" and "l" and "examine" for "x", "get" for "take",
+"throw" for "drop", and "switch" for "press"). These synonyms will need to
+be handled at some point. But they are not part of the handleworx script. This
+script ALWAYS receives one of these commands: "x", "take", "drop", "press".
+You do not need to test whether you get something else. I guarantee it will
+always be one of these four commands (no synonyms, no other commands, no
+incorrect commands).
+
+Let' try "drop":
+% ~/PA5/scripts/handleworx drop key
+% ~/PA5/scripts/handleworx drop key
+You don't have that.
+% ~/PA5/scripts/handleworx drop computer
+You don't have that.
+% ~/PA5/scripts/handleworx drop egg
+You don't have that.
+%
+
+
+Now we also said that there was one more command, "press". Let's see it:
+% ~/PA5/scripts/handleworx press egg
+I do not see that here.
+% ~/PA5/scripts/handleworx press key
+You cannot press that.
+% ~/PA5/scripts/handleworx take key
+% ~/PA5/scripts/handleworx press key
+You cannot press that.
+% ~/PA5/scripts/handleworx press switch
+I do not see that here.
+%
+
+See how that worked? You normally get the message "you cannot press that" (if
+the item is visible) or "I do not see that here." (otherwise). But there is
+one exception: the switch (which is located in the maintenance room of the
+museum) has a switch that you can press. Let's go there and try pressing it
+again:
+
+% cd ~/pa5/start/e/n/w/n/nw/n/e/e
+% ls
+acid  n  nitric  switch
+% cat switch
+I see nothing special about that.
+% ~/PA5/scripts/handleworx press switch
+The button is now in the on position.
+% ~/PA5/scripts/handleworx x switch
+I see nothing special about that.
+% ~/PA5/scripts/handleworx press switch
+The button is now in the off position.
+% ~/PA5/scripts/handleworx press switch
+The button is now in the on position.
+% ~/PA5/scripts/handleworx press switch
+The button is now in the off position.
+%
+
+See that? It can be turned on and off. What is actually happening is that there
+is a hidden file that holds the button state
+% ls -A .switch
+.switch
+% cat .switch
+The button is now in the off position.
+% ~/PA5/scripts/handleworx press switch
+The button is now in the on position.
+% cat .switch
+The button is now in the on position.
+% ~/PA5/scripts/handleworx press switch
+The button is now in the off position.
+%
+
+
+See how that works? Well there is actually one additional effect. See that
+the game hints at the purpose of the switch:
+% cat .descr*
+Maintenance room
+You are in some sort of maintenance room for the museum.  There is a
+switch on the wall labeled ‘BL’.  There are doors to the west and north.
+%
+
+It is a BL (which is a black light). Turning it on affects the room with the
+fish tanks:
+% ls ../n/.description?
+../n/.description1 
+% ~/PA5/scripts/handleworx press switch
+The button is now in the on position.
+% ls ../n/.description?
+../n/.description1  ../n/.descriptionZ
+%
+
+See that new file? What is it?
+% cat ../n/.descriptionZ
+The room is lit by a black light, causing the fish, and some of
+your objects, to give off an eerie glow.
+%
+
+OK. It is a message that this switch controls. What if we turn the switch off?
+% ~/PA5/scripts/handleworx press switch
+The button is now in the off position.
+% ls ../n/.description?
+../n/.description1
+%
+
+See? The message is gone. Let's turn it back on, go to the bone, pick up the
+bone, examine the bone, go into the room with the black light, and look at the
+bone again:
+% ~/PA5/scripts/handleworx press switch
+The button is now in the on position.
+% cd ../..
+% ls
+bone  dinosaur  e
+% ~/PA5/scripts/handleworx take bone
+% ls
+dinosaur  e
+% ~/PA5/scripts/handleworx x bone
+I see nothing special about that.
+% cd e/n
+% ~/PA5/scripts/handleworx x bone
+In this light you can see some writing on the bone. It says:
+For an explosive time, go to Fourth St. and Vermont.
+% cd ..
+% ~/PA5/scripts/handleworx x bone
+I see nothing special about that.
+%
+
+See that? It displays different but only in that room, and only if the light is
+on.
+
+
+To conclude, let's try some wrong things:
+% ~/PA5/scripts/handleworx press keyegg
+I don't know what that is.
+% ~/PA5/scripts/handleworx press
+You must supply an object.
+% ~/PA5/scripts/handleworx take
+You must supply an object.
+% ~/PA5/scripts/handleworx x key egg
+I see nothing special about that.
+%
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+
+
+So, what does it all mean? Well I've already given you the "handleworx" file.
+So your assignment must be something else. And that is: rewrite some part of
+handleworx as an awk program.
+
+Understanding this involves three steps:
+1. Look at "handleworx" and trace though it and reason out what it is doing.
+2. Look at "handle" and see how it retains portions of handleworx's code, but
+   how it also has removed other portions. Instead, notice how it calls
+   "handle.awk" to do those parts.
+3. Figure out how to write handle.awk
+
+To make sense what is goin on, let's look at the top of "handle"
+
+% head -11 % ~/PA5/scripts/handle
+#!/usr/bin/tcsh
+~/PA5/scripts/objecttest $*
+@ R = $?
+grep -q " on" ../e/.switch >& /dev/null
+echo $* $R $? | awk --traditional -f ~/PA5/scripts/handle.awk | tee .temp
+if ( -z .temp ) then
+  if ( $1 == drop ) mv ~/PA5/inventory/$2 .
+  if ( $1 == take ) mv $2 ~/PA5/inventory
+  if ( ( -e $2 ) && ( $1 == x ) ) cat $2
+  if ( ( ! -e $2 ) && ( $1 == x ) ) cat ~/PA5/inventory/$2
+  if ( $1 == press ) then
+
+
+Notice that it:
+1. Executes objecttest
+2. Runs awk with the file handle.awk 
+3. Passes 4 values to this awk program.
+   - And that this passing is done through the pipe, not through the argument
+     list. (If you will recall, awk doesn't receive argument lists.)
+   - And that these 4 values are: 1) the command, 2) the object, 3) the code
+     from objecttest, and 4) a boolean indicating that you are in the room
+     with the fish  and the black light is on.
+4. Uses "tee" to display the error messages, while also creating a file
+5. Uses that file to identify if the command as successful (ie, had no error
+   messages)
+6. If the command was successful, then it actually executes the command.
+   - but there is one exception: x bone may have been handled by the awk
+     script (ie, if the secret message was displayed)
+
+
+So, to design handle.awk, try understanding  what the differences are between
+handle and handleworx. Note: you cannot modify the handle script in any way.

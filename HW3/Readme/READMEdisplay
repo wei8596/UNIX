@@ -1,0 +1,200 @@
+This file describe the display file of your new homework.
+It displays the .description? file of the current directory, and it then
+replaces it with its short version (just the first line). It also displays
+objects. To understand this, consider the following:
+
+% cd ~
+% tar -xvf PA3.tar >& /dev/null
+% cd ~/PA3/start/e
+% ~/display
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+% ~/display
+Old Building hallway
+% cd e
+% ~/display
+Mailroom
+You are in a mailroom.  There are many bins where the mail is usually
+kept.  The exit is to the west.
+% ~/display
+Mailroom
+% ~/display
+Mailroom
+% cd ../n/w
+% cat .description?
+Post office
+You are near the remains of a post office.  There is a mail drop on the
+face of the building, but you cannot see where it leads.  A path leads
+back to the east, and a road leads to the north.
+% ~/display
+Post office
+You are near the remains of a post office.  There is a mail drop on the
+face of the building, but you cannot see where it leads.  A path leads
+back to the east, and a road leads to the north.
+% cat .description?
+Post office
+% ~/display
+Post office
+%
+
+
+In the above, I have assumed that the display file is my home directory, as is
+the PA3.tar file that I have posted with this homework description.
+Notice that the display script does, indeed, show the .description file. And
+also notice that it does, indeed, turn the .description file into its one-line
+form.
+
+But what about the objects? Above, it said that the objects are also listed,
+but there were no listed objects. That is because the objects are in those two
+rooms ("bins" and "bin" in the mailroom and "mail" in the post office) are
+objects that don't display (you can play the game, and you'll see that they
+don't). 
+
+So, let's see a room with visible objects:
+% cd ~/PA3/start/e/n
+% ~/display
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+There is a lamp here.
+There is a license here.
+There is a silver bar here.
+% ~/display
+Meadow
+There is a lamp here.
+There is a license here.
+There is a silver bar here.
+%
+
+
+OK. Now, there is one more detail: the script can receive an optional -f flag
+that will display the full description, even if the room has been visited 
+before. Let's see that:
+
+% cd ~
+% tar -xvf PA3.tar >& /dev/null
+% cd ~/PA3/start/e
+% ~/display
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+% ~/display
+Old Building hallway
+% ~/display
+Old Building hallway
+% ~/display -f
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+% ~/display
+Old Building hallway
+%
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+Line by line description:
+
+Line 1: #!/usr/bin/tcsh (Or #!/bin/tcsh if your system uses it instead.)
+
+Line 2: set d = __1__
+        __1__: This is a unix command that identifies the name of the specific
+	       .description? file in the current directory. (Recall that each
+	       directory of the game has such a file, but they differ in their
+	       final letter.)
+
+Line 3: if ( __2__ ) then
+        __2__: This test to see if the -f flag was used. But take note of
+	       slides 42-47 of Lecture 4.
+
+Line 4:    cat ~/PA3/descriptions/$d
+Line 5: else
+Line 6:    cat $d
+Line 7:    head -1 ~/PA3/descriptions/$d > $d
+Line 8: endif
+
+Line 9: This line creates an array of most of the objects that are seen in
+        the current directory. This set of objects is any of the following:
+          acid, bone, egg, glycerine, jar, key, lamp, license, ruby, or silver
+
+        And none of the following:
+          bin, bins, bus, cliff, coins, computer, dinosaur, e, fish,
+	  gate, mail, n, nitric, nw, s, switch, tank, tanks, or w
+
+        Note that "bus" and "coins" don't go into the array, even though
+        they are visible objects in the game. The reason is that we deal
+        with those two separately, below.
+	
+        Note also that "nitric" doesn't go into the array, even though it
+        is seen. (The reason is that "nitric" is an alias for "acid", which
+	is seen. So either "nitric" or "acid" can be examined or picked up.
+	But when displaying, only one of them will display, because they are
+	just one object -- and the one that will display is acid. You can see
+	that here:
+        
+        % cd PA3/start/e/n/w/n/nw/n/e/e/
+        % ls
+        acid  n  nitric  switch
+        % ~/display
+        Maintenance room
+        You are in some sort of maintenance room for the museum.  There is a
+        switch on the wall labeled ‘BL’. There are doors to the west and north.
+        There is an acid here.
+        %
+
+        OK, so how can we get these 9 things:
+          acid, bone, egg, glycerine, jar, key, lamp, license, ruby, or silver
+        And none of these 19 things:
+          bin, bins, bus, cliff, coins, computer, dinosaur, e, fish,
+	  gate, mail, n, nitric, nw, s, switch, tank, tanks, or w
+
+        We can get these 9 things with a single wildcard pattern. It involves
+	focusing on the last 3 letters. You MUST, therefore, use a SINGLE
+	pattern to identify these 9 things (and none of the other 19). But, in
+	doing this, note slide #39 of Lecture 4. I find that you can use [...],
+	but can't use [^...].
+
+        But there is another difficulty:
+	If the directory doesn't have any of the 9 objects, then you'll get
+	an error. The solution is to add a second wildcard pattern, ".d*".
+	We know	that each directory has a .description? file, so the ".d*"
+	ensures that there will be at least one element in the array. (But
+	it also means that we'll have to remember, below, to ignore the
+	.description? element of the array.)
+
+Line 10: foreach __3__
+         __3__: This loops through the elements of the array created above.
+	 
+Line 11: This line detects the .description? element and does a "continue" to
+         skip it.
+	 
+Line 12:    echo "There is __4__ here."
+         __4__: The calls the "name" script (which is one of the other files
+	        you will create in this assignment) with the loop element as
+		the argument. The name script should be in the PA3/scripts
+		directory.
+	 
+Line 13: end
+
+Line 14: if ( __5__ ) echo "There are coins here."
+         __5__: This tests to see if the "coins" file is in the current
+	        directory.
+		
+Line 15: if ( __6__ ) then
+         __6__: This tests two conditions:
+	        1. That the bus is in the current directory.
+	        2. That the "~/PA3/inventory/.bus" file has zero size. (See
+		   slide #41 of Lecture 4.)
+		   Note: The .bus file is, for right now, always empty. It
+		         starts out that way in the PA3.tar file that I've
+			 given you, and it won't get changed until the next
+			 programming assignment. But, in the next assignment,
+			 when it does get changed, the purpose will be to
+			 indicate that the player has gotten onto the bus.
+		
+Line 16:    echo "There is a bus here."
+
+Line 17: else if ( __7__ ) then
+         __7__: That the "~/PA3/inventory/.bus" file has nonzero size.
+
+Line 18:    echo "You are on the bus."
+Line 19: endif

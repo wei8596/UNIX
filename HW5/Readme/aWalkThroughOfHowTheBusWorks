@@ -1,0 +1,160 @@
+% ~/game5 
+Computer room
+You are in a computer room.  It seems like most of the equipment has
+been removed.  There is a VAX 11/780 in front of you, however, with
+one of the cabinets wide open.  A sign on the front of the machine
+says: This VAX is named ‘pokey’.  To type on the console, use the
+‘type’ command.  The exit is to the east.
+There is a shiny brass key here.
+>e
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>n
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+There is a lamp nearby.
+There is a bus driver's license here.
+There is a silver bar here.
+>w
+Post office
+You are near the remains of a post office.  There is a mail drop on the
+face of the building, but you cannot see where it leads.  A path leads
+back to the east, and a road leads to the north.
+>n
+Main-Maple intersection
+You are at the intersection of Main Street and Maple Ave.  Main street
+runs north and south, and Maple Ave runs east off into the distance.
+If you look north and east you can see many intersections, but all of
+the buildings that used to stand here are gone.  Nothing remains except
+street signs.
+There is a road to the northwest leading to a gate that guards a building.
+>n
+Main-Oaktree intersection
+You are at the north end of Main Street and the west end of Oaktree Ave.
+There is a jewel-encrusted egg here.
+>e
+First-Oaktree intersection
+You are at the north end of First Street and the east end of Oaktree Ave.
+There is a bus here.
+>s
+First-Maple intersection
+You are at the south end of First Street and the east end of Maple Ave.
+There is a cliff off to the east.
+There are some valuable coins here.
+>w
+Main-Maple intersection
+>n
+Main-Oaktree intersection
+There is a jewel-encrusted egg here.
+>e
+First-Oaktree intersection
+There is a bus here.
+>s
+First-Maple intersection
+There are some valuable coins here.
+>n
+First-Oaktree intersection
+There is a bus here.
+>x bus
+It is a 35 passenger bus with the company name ‘mobytours’ on it.
+>get bus
+You cannot take that.
+>board bus
+You are not licensed for this type of vehicle.
+>enter
+You are not licensed for this type of vehicle.
+>s
+First-Maple intersection
+There are some valuable coins here.
+>w
+Main-Maple intersection
+>s
+Post office
+>e
+Meadow
+There is a lamp nearby.
+There is a bus driver's license here.
+There is a silver bar here.
+>get all
+A lamp: Taken.
+A license: Taken.
+A silver bar: Taken.
+>w
+Post office
+>n
+Main-Maple intersection
+>n
+Main-Oaktree intersection
+There is a jewel-encrusted egg here.
+>e
+First-Oaktree intersection
+There is a bus here.
+>enter
+You board the bus and get in the driver's seat.
+>board
+You are already in the bus!
+>w
+Main-Oaktree intersection
+There is a jewel-encrusted egg here.
+>x egg
+It is a valuable Fabrege egg.
+>get egg
+You can't take anything while on the bus.
+>drop lamp
+You can't drop anything while on the bus.
+>i
+You currently have:
+A lamp
+A license
+A silver bar
+>exit
+You hop off the bus.
+>exit
+You are already off the bus!
+>l
+Main-Oaktree intersection
+You are at the north end of Main Street and the west end of Oaktree Ave.
+There is a bus here.
+There is a jewel-encrusted egg here.
+>get egg
+A valuable egg: Taken.
+>drop lamp
+Done.
+>board
+You board the bus and get in the driver's seat.
+>s
+Main-Maple intersection
+>nw
+Museum entrance
+You are in front of the Museum of Natural History.  A door leads into
+the building to the north, and a road leads to the southeast.
+>n
+Museum lobby
+You are in the main lobby for the Museum of Natural History.  In the center
+of the room is the huge skeleton of a dinosaur.  Doors lead out to the
+south and east.
+There is a dinosaur bone here.
+>get bone
+You can't take anything while on the bus.
+>exit
+You hop off the bus.
+>l
+Museum lobby
+You are in the main lobby for the Museum of Natural History.  In the center
+of the room is the huge skeleton of a dinosaur.  Doors lead out to the
+south and east.
+There is a dinosaur bone here.
+There is a bus here.
+>get all
+A bone: Taken.
+>l
+Museum lobby
+You are in the main lobby for the Museum of Natural History.  In the center
+of the room is the huge skeleton of a dinosaur.  Doors lead out to the
+south and east.
+There is a bus here.
+>get bus
+You cannot take that.
+>quit

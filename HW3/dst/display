@@ -1,0 +1,19 @@
+#!/usr/bin/tcsh
+set d = `ls .description*`
+if ( X$1 == X-f ) then
+	cat ~/PA3/descriptions/$d
+else
+	cat $d
+	head -1 ~/PA3/descriptions/$d > $d
+endif
+set arr = (`ls *[aceijknouv][abegimns][degpry] .d*`)
+foreach element($arr)
+	if( $element == $d ) continue
+	echo "There is `~/PA3/scripts/name $element` here." 
+end
+if ( -e coins ) echo "There are coins here."
+if ( -e bus && -z ~/PA3/inventory/.bus ) then	
+	echo "There is a bus here."
+else if ( ! -z ~/PA3/inventory/.bus ) then
+	echo "You are on the bus."
+endif

@@ -1,0 +1,15 @@
+#!/usr/bin/tcsh
+set examinable = ( "acid" "bin" "bins" "bone" "bus" "cliff" "coins" "computer"\
+                   "dinosaur" "egg" "fish" "gate" "glycerine" "jar" "key" \
+		   "lamp" "license" "mail" "nitric" "ruby" "silver" "switch" \
+		   "tank" "tanks" )
+if ( $# < 2 ) exit 1
+foreach i ( $examinable )
+	if ( $i == $2 ) then
+		if ( -f ~/PA3/inventory/$2 ) exit 2
+		if ( ( -f $2 ) && ( ( $2 =~ *[aceijknoruv][abegimns][cdegprsy] ) && ( $2 !~ bins ) ) ) exit 3
+		if ( -f $2 ) exit 4
+		exit 5
+	endif
+end
+exit 6

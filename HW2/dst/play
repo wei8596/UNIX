@@ -1,0 +1,10 @@
+alias items='ls [abcekr][^ail][^m]* &> /dev/null || ls [gjls][ail][^t]* &> /dev/null && echo "Here there is:" && ls [abcekr][^ail][^m]* [gjls][ail][^t]* 2> /dev/null'
+alias see='cat `ls .description*`;head -n 1 ~/Descriptions/`ls .description*` > `ls .description*`;items;rm -f ~/temp;cd `pwd -P`'
+alias look='cat ~/Descriptions/`ls .description*`;items'
+alias nw='cd nw 2> /dev/null;see'
+alias se='basename `pwd` > ~/temp;fgrep -q "nw" ~/temp 2> /dev/null && cd ..; see'
+alias e='cd e 2> /dev/null || basename `pwd` > ~/temp;fgrep -q "w" ~/temp 2> /dev/null && cd ..; see'
+alias w='cd w 2> /dev/null || basename `pwd` > ~/temp;fgrep -q "e" ~/temp 2> /dev/null && cd ..; see'
+alias n='cd n 2> /dev/null || basename `pwd` > ~/temp;fgrep -q "s" ~/temp 2> /dev/null && cd ..; see'
+alias s='cd s 2> /dev/null || basename `pwd` > ~/temp;fgrep -q "n" ~/temp 2> /dev/null && cd ..; see'
+cd;rm -rf start;tar -xvf PA2.tar > /dev/null;cd start; ~/collectDescriptions; see

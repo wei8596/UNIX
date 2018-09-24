@@ -1,0 +1,396 @@
+                       Programming Assignment #2
+		           Overview Document
+
+The new homework is due on Monday March 26th at 11:59pm.
+
+This is an overview of the assignment, so that you can read it and get an idea.
+After reading this, go on to read the READMEpa2 file (once I post it, that is).
+
+
+Part 1. The Actual Game
+
+In lecture 2, we learned about the emacs text editor. Let me now tell you the
+bizarre fact that emacs has some built in games. One of these is a text-based
+adventure game. We will be recreating a portion of that game, as a way of
+reinforcing what we have learned about UNIX in lectures 1 & 2. I will now give
+some details about how to run the specific part of the game that we will be
+recreating. But these details are only for your reference -- you will not
+need to play the game in order to do the assignment, because I will describe
+what precisely you are supposed to do, here in this document.
+
+To begin, if you want to run the game, you open emacs. The game can be run
+under the menu choice: alt-` -> tools -> games -> Adventure.
+Nonetheless, the game's own help page says that it is not intended to be run
+in this way. Instead it is meant to be run by typing: "emacs -batch -l dunnet"
+
+Let's try that:
+
+% emacs -batch -l dunnet
+Dead end
+You are at a dead end of a dirt road.  The road goes to the east.
+In the distance you can see that it will eventually fork off.  The
+trees here are very tall royal palms, and they are spaced equidistant
+from each other.
+There is a shovel here.
+>
+
+
+Above, we see the start of the game. The prompt has become a ">", indicating
+that you are inside the game. We can type a command now. For example, we could
+type "get shovel" or we could type "e", since the text says the road goes east.
+
+But we won't type those commands, instead we'll restore a saved file, called
+"house", that I have provided to you in the same posting as this README file:
+
+% emacs -batch -l dunnet
+Dead end
+You are at a dead end of a dirt road.  The road goes to the east.
+In the distance you can see that it will eventually fork off.  The
+trees here are very tall royal palms, and they are spaced equidistant
+from each other.
+There is a shovel here.
+>restore house
+Done.
+Computer room
+You are in a computer room.  It seems like most of the equipment has
+been removed.  There is a VAX 11/780 in front of you, however, with
+one of the cabinets wide open.  A sign on the front of the machine
+says: This VAX is named ‘pokey’.  To type on the console, use the
+‘type’ command.  The exit is to the east.
+The panel lights are flashing in a seemingly organized pattern.
+There is a shiny brass key here.
+>
+
+Above, we see that restoring the house file has advanced us to a later part of
+the game (the fourth level: the level that starts in the house). The reason
+that we have advanced to this point is that this fourth level is what we will
+be attempting to recreate. The above text says that there is an exit to the
+east. So let's continue to play the game for a bit:
+
+> e
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>e
+Mailroom
+You are in a mailroom.  There are many bins where the mail is usually
+kept.  The exit is to the west.
+>x bins
+All of the bins are empty.  Looking closely you can see that there
+are names written at the bottom of each bin, but most of them are
+faded away so that you cannot read them.  You can only make out three
+names:
+                   Jeffrey Collier
+                   Robert Toukmond
+                   Thomas Stock
+
+>
+
+From the above, we see that we can move around the rooms and we can look at
+objects that are in those rooms. The description said that the mailroom has
+bins for the mail. So I typed 'x' (short for eXamine) and got a description
+about the bins. In fact, we recognize this description: it is the text of the
+"bins" file that I gave you in the first homework. So let's continue to play:
+
+>e
+Old Building hallway
+>x bins
+I don't see that here.
+>
+
+Here we see that you can't see the bins if you aren't in the room with the
+bins (ie, the directory which contains the "bins" file). Let's look at some
+more:
+
+>e
+Mailroom
+>w
+Old Building hallway
+>look
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>
+
+From the above, we see that the original text display can be seen by typing
+"look". So let's look at some more:
+
+>w
+Computer room
+The panel lights are flashing in a seemingly organized pattern.
+There is a shiny brass key here.
+>x key
+I see nothing special about that.
+>x computer
+I see nothing special about that.
+>
+
+From the above, we see that there are two objects in the computer room. One
+object, the key, displays a message "There is a shiny brass key here". The
+other object, the computer, does not display a message (which, by the way,
+is like the bins, which also did not display). Another thing that we see is
+that there is a message about flashing lights (we won't implement this line
+about flashing lights). So let's look at some more:
+
+>e
+Old Building hallway
+>look
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>n
+You don't have a key that can open this door.
+
+From the above, we see that a key is needed to go north. (There also is a
+door to the south, but that is not part of this homework.) No let's look at
+some more:
+
+>w
+Computer room
+The panel lights are flashing in a seemingly organized pattern.
+There is a shiny brass key here.
+>get key
+> get computer
+You cannot take that.
+>e
+Old Building hallway
+>n
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+There is a lamp nearby.
+There is a bus driver's license here.
+There is a silver bar here.
+>
+
+From the above, we see that some objects can be picked up, like the key.
+Other objects cannot be picked up, like the computer. And there is a logic
+to this: the reason that the key produced the message, "There is a shiny 
+brass key here" but the computer and the bins didn't display a message is
+because they cannot be picked up. We also see that the key opens the door
+to the north.
+
+Let's go just a little further:
+>w
+Post office
+You are near the remains of a post office.  There is a mail drop on the
+face of the building, but you cannot see where it leads.  A path leads
+back to the east, and a road leads to the north.
+>n
+Main-Maple intersection
+You are at the intersection of Main Street and Maple Ave.  Main street
+runs north and south, and Maple Ave runs east off into the distance.
+If you look north and east you can see many intersections, but all of
+the buildings that used to stand here are gone.  Nothing remains except
+street signs.
+There is a road to the northwest leading to a gate that guards a building.
+>e
+First-Maple intersection
+You are at the south end of First Street at Maple Ave.
+>e
+Second-Maple intersection
+You are at the south end of Second Street at Maple Ave.
+There is a jewel-encrusted egg here.
+>e
+Third-Maple intersection
+You are at the south end of Third Street at Maple Ave.
+>
+
+From the above, we see that the directories which we made for the first 
+assignment were slightly smaller than the real game: The "Second-Maple
+intersection" continues east to the "Third-Maple intersection". Also, the
+objects are in different places.
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Part 2. Our version of the game
+
+OK. That's enough of the actual game. For this assignment we are going to
+implement a simplified version. (If you think about it, it is pretty surprising
+that we can implement anything at all -- we don't know how to do make variables
+or loops yet.)
+
+Our main simplification is that we will, in this present homework, only
+implement the commands: n, s, w, e, ne, sw, and look.
+
+So let's get started:
+
+% source play
+Computer room
+You are in a computer room.  It seems like most of the equipment has
+been removed.  There is a VAX 11/780 in front of you, however, with
+one of the cabinets wide open.  A sign on the front of the machine
+says: This VAX is named ‘pokey’.  To type on the console, use the
+‘type’ command.  The exit is to the east.
+Here there is:
+ key
+%
+
+From the above, we see several differences. First, the line about flashing
+lights is missing (we won't implement it this time). Second, although the
+key message does display, but not in the same way as it displays in the real
+game. Now let's keep going:
+
+% pwd
+/home/user/start
+% ls -A
+.descriptionA  computer  e  key
+%
+
+From the above, we are reminded that we are not really playing a game. We
+are really just using UNIX directories and files. Let's keep going:
+
+% get key
+bash: get: command not found
+% x key
+bash: x: command not found
+% cat key
+I see nothing special about that.
+% cat .descriptionA
+Computer room
+% 
+
+From the above, we see that the "get" and "x" commands are not implemented
+in this homework (but will be done later). Nonetheless, even though the "x"
+command is not implemented, the "cat" command is able to do the same thing.
+We also see that the .descriptionA file actually holds just the first line
+of the description. Going further:
+
+% e
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+% pwd
+/home/user/start/e
+%
+
+From the above, we see that you can move east, and the message displays.
+Now let's continue:
+
+% n
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+Here there is:
+lamp  license  silver
+%
+
+From the above, we see that the key is not needed (for this homework).
+Now let's continue:
+
+% n
+Meadow
+Here there is:
+lamp  license  silver
+
+From the above, we see that there are no error messages for moving in a
+disallowed direction (for this homework). Now let's continue:
+
+% cat w/.descriptionE
+Post office
+You are near the remains of a post office.  There is a mail drop on the
+face of the building, but you cannot see where it leads.  A path leads
+back to the east, and a road leads to the north.
+% w
+Post office
+You are near the remains of a post office.  There is a mail drop on the
+face of the building, but you cannot see where it leads.  A path leads
+back to the east, and a road leads to the north.
+% cat .descriptionE
+Post office
+%
+
+From the above, we see that the .description files do not start out with
+only the first line (because cat w/.descriptionE showed all the lines of
+the description). Let's keep going:
+
+% e
+Meadow
+Here there is:
+lamp  license  silver
+% cat .descriptionD
+Meadow
+%
+
+From the above, we are reminded that the .desciption files become just one
+line long, once a room is entered. Going on:
+
+% look
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+Here there is:
+lamp  license  silver
+%
+
+From the above, we see that the "look" command works, even though the
+.description file lost the additional lines. Where then were they found?
+Well, let's see:
+
+% cat ~/PA2collected/descriptionD
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+%
+
+From the above, we see that the original description is stored in one of
+the directories that I'll give you in this homework. Moving on:
+
+% w
+Post office
+% n
+Main-Maple intersection
+You are at the intersection of Main Street and Maple Ave.  Main street
+runs north and south, and Maple Ave runs east off into the distance.
+If you look north and east you can see many intersections, but all of
+the buildings that used to stand here are gone.  Nothing remains except
+street signs.
+There is a road to the northwest leading to a gate that guards a building.
+%
+
+OK. So we nothing new to see here. Let's move on:
+
+% e
+First-Maple intersection
+You are at the south end of First Street and the east end of Maple Ave.
+There is a cliff off to the east.
+Here there is:
+ coins
+% n
+First-Oaktree intersection
+You are at the north end of First Street and the east end of Oaktree Ave.
+Here there is:
+ bus
+%
+
+From the above, we see something interesting: there is a connection between
+the directory with the coins and the one with the bus -- even though neither
+is the parent directory of the other. This is accomplished through adding a
+link, as described in the homework file.
+
+Moving on:
+
+% w
+Main-Oaktree intersection
+You are at the north end of Main Street and the west end of Oaktree Ave.
+Here there is:
+ egg
+% s
+Main-Maple intersection
+% e
+First-Maple intersection
+Here there is:
+ coins
+% n
+First-Oaktree intersection
+ bus
+% w
+Main-Oaktree intersection
+Here there is:
+ egg
+%
+
+From the above we see that these four directories can go in a circle. Another
+such link will be made between the room with the acid and the one with the
+glycerine.
+
+And that is the end of this document. I will post another file with details
+on the implementation of the assignment; this present file is just an overview
+to read and understand.

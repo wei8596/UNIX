@@ -1,0 +1,549 @@
+To see how this new version of the game works, let's begin by looking at
+how objects can e examined:
+
+% cat aWalkThroughOfHowObjectsWork | sed -n 2,20p
+Computer room
+You are in a computer room.  It seems like most of the equipment has
+been removed.  There is a VAX 11/780 in front of you, however, with
+one of the cabinets wide open.  A sign on the front of the machine
+says: This VAX is named ‘pokey’.  To type on the console, use the
+‘type’ command.  The exit is to the east.
+There is a shiny brass key here.
+>examine key
+I see nothing special about that.
+>look key
+I see nothing special about that.
+>x key
+I see nothing special about that.
+>x computer
+I see nothing special about that.
+>x bin
+I do not see that here.
+>x abc
+I don't know what that is.
+
+
+From the above, we see that "look" and "examine" and "x" all do the same thing.
+We also see that objects can be examined, but only if they are present, either
+in the room or (as we'll see in a minute) in your inventory. Also objects that
+can't be taken, like the computer, can still be examined. Things that aren't
+objects (like 'abc') get a different message than objects that do exist, but
+are just not present at this location.
+
+
+Going on, we see:
+% cat aWalkThroughOfHowObjectsWork | sed -n 21,50p
+>e
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>s
+You can't go that way.
+>e
+Mailroom
+You are in a mailroom.  There are many bins where the mail is usually
+kept.  The exit is to the west.
+>x bin
+All of the bins are empty.  Looking closely you can see that there
+are names written at the bottom of each bin, but most of them are
+faded away so that you cannot read them.  You can only make out three
+names:
+                   Jeffrey Collier
+                   Robert Toukmond
+                   Thomas Stock
+
+>x bins
+All of the bins are empty.  Looking closely you can see that there
+are names written at the bottom of each bin, but most of them are
+faded away so that you cannot read them.  You can only make out three
+names:
+                   Jeffrey Collier
+                   Robert Toukmond
+                   Thomas Stock
+
+>w
+Old Building hallway
+
+Here we see that we can move around, but not to places that don't exist as part
+of the game (The door to the south of the Old Building hallway is not part of
+our game). We also see that you can examine either the bin or bins -- they are
+really the same thing. We also see that revisiting a room gives a one-line
+description.
+
+
+Now we remember that examining an item and looking at the item do the same
+thing. So what happens if we don't give a object? Let's see:
+% cat aWalkThroughOfHowObjectsWork | sed -n 51,58p
+>l
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>x
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+
+Yep, they behave identically (and so would "examine"). They display the full
+description of the room.
+
+
+Let's try to get the key and the computer:
+% cat aWalkThroughOfHowObjectsWork | sed -n 59,67p
+>get key
+I do not see that here.
+>w
+Computer room
+There is a shiny brass key here.
+>get key
+A brass key: Taken.
+>get computer
+You cannot take that.
+
+Here we see that you have to be in the right place, and that you can only pick
+up certain items. In fact, the message that prints looks like the message from
+programming assignment 4. (In fact, this assignment will use the sed script.)
+
+
+Let's move on...
+% cat aWalkThroughOfHowObjectsWork | sed -n 68,79p
+>i
+You currently have:
+A brass key
+>e
+Old Building hallway
+>get key
+I do not see that here.
+>x key
+I see nothing special about that.
+>i
+You currently have:
+A brass key
+
+Here we see that you can examine things in you inventory (we've already
+examined things in the room). We also see that we can't get things that we
+already have.
+
+
+Let's move on...
+% cat aWalkThroughOfHowObjectsWork | sed -n 80,95p
+>drop key
+Done.
+>drop key
+You don't have that.
+>i
+You currently have:
+>l
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+There is a shiny brass key here.
+>e
+Mailroom
+>w
+Old Building hallway
+There is a shiny brass key here.
+
+Here we see that you can drop things. When you do so, it appears in the room.
+
+
+Let's try picking it up a different way:
+% cat aWalkThroughOfHowObjectsWork | sed -n 96,104p
+>get all
+A brass key: Taken.
+>get all
+Nothing to take.
+>drop all
+I don't know what that is.
+>i
+You currently have:
+A brass key
+
+Here we see that you can "get all" but you can't "drop all". That is how the
+original game works.
+
+
+Let's now try heading out the north door:
+% cat aWalkThroughOfHowObjectsWork | sed -n 105,111p
+>n
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+There is a lamp nearby.
+There is a bus driver's license here.
+There is a silver bar here.
+
+
+There are three items here. let's pick the up, but in different ways:
+% cat aWalkThroughOfHowObjectsWork | sed -n 112,124p
+>take lamp
+A lamp: Taken.
+>i
+You currently have:
+A brass key
+A lamp
+>get all
+A license: Taken.
+A silver bar: Taken.
+>l
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+
+Here we see that "take" works just the same as "get". We also see that "get 
+all" (or "take all") will pick up everything that it can (ie, those 11 items
+from programming assignment 4's sed file). Since everything was picked up,
+there are no more items in the meadow.
+
+
+Let's try to do a few more wrong things, just to see the types of errors
+produced, and then quit:
+% cat aWalkThroughOfHowObjectsWork | sed -n 125,\$p
+>get all
+Nothing to take.
+>get egg
+I do not see that here.
+>get abc
+I don't know what that is.
+>n
+You can't go that way.
+>hello
+I don't understand that.
+>quit
+
+
+OK. So now we've seen that walkthrough. Let's start looking at the next one:
+% cat aWalkThroughOfHowTheBusWorks | sed -n 2,19p
+Computer room
+You are in a computer room.  It seems like most of the equipment has
+been removed.  There is a VAX 11/780 in front of you, however, with
+one of the cabinets wide open.  A sign on the front of the machine
+says: This VAX is named ‘pokey’.  To type on the console, use the
+‘type’ command.  The exit is to the east.
+There is a shiny brass key here.
+>e
+Old Building hallway
+You are in the hallway of an old building.  There are rooms to the east
+and west, and doors leading out to the north and south.
+>n
+Meadow
+You are in a meadow in the back of an old building.  A small path leads
+to the west, and a door leads to the south.
+There is a lamp nearby.
+There is a bus driver's license here.
+There is a silver bar here.
+
+Here we see that we were able to go through the door, even though we did not
+pick up the key. This is because we still have one more homework to do, which
+will use awk. I am not assigning that yet, so our game cannot do any of the
+tests for blocked movement. That means: you can go through the door wihout the
+key, you can go through the gate without the bus, you can drive the bus into
+buildings. All of these things happen because we don't write the code to
+prevent them from happening.
+
+
+Next, let's skip ahead in the walkthough. In the skipped portion, we typed
+these commands: w,n,n,e,s. (You can look in the walkthrough file and see their
+responses.) So now, let's see what comes after that:
+% cat aWalkThroughOfHowTheBusWorks | sed -n 46,59p
+>w
+Main-Maple intersection
+>n
+Main-Oaktree intersection
+There is a jewel-encrusted egg here.
+>e
+First-Oaktree intersection
+There is a bus here.
+>s
+First-Maple intersection
+There are some valuable coins here.
+>n
+First-Oaktree intersection
+There is a bus here.
+
+
+As we see, we are now in the place where the bus is. Let's try some things: 
+% cat aWalkThroughOfHowTheBusWorks | sed -n 60,67p
+>x bus
+It is a 35 passenger bus with the company name ‘mobytours’ on it.
+>get bus
+You cannot take that.
+>board bus
+You are not licensed for this type of vehicle.
+>enter
+You are not licensed for this type of vehicle.
+
+Here we see that we need the license in order to board the bus. We also see
+that you don't need to say "enter bus" (or "board bus"), you can just say
+"enter" (or "board").
+
+
+So let's go back an get the license by typing: s,w,s,e,get all,w,n,n
+We'll skipp that part of the walkthrough. Here's what comes next:
+% cat aWalkThroughOfHowTheBusWorks | sed -n 91,97p
+>e
+First-Oaktree intersection
+There is a bus here.
+>enter
+You board the bus and get in the driver's seat.
+>board
+You are already in the bus!
+
+Here we see that you can board the bus if you have the license. Also, there
+is a special error message if you try boarding the bus while already on it.
+
+
+Let's try driving the bus:
+% cat aWalkThroughOfHowTheBusWorks | sed -n 98,100p
+>w
+Main-Oaktree intersection
+There is a jewel-encrusted egg here.
+
+Here we see that we have moved. If we were playing the real game, there would
+be a message "The bus lurches ahead and comes to a screeching halt." We also
+will, in the future, have that message -- but not until the next homework.
+
+
+Let's see if we really are on the bus:
+% cat aWalkThroughOfHowTheBusWorks | sed -n 101,106p
+>x egg
+It is a valuable Fabrege egg.
+>get egg
+You can't take anything while on the bus.
+>drop lamp
+You can't drop anything while on the bus.
+
+Here we see that you can look at the egg (out of the window of the bus), but
+you can't get it. You also can't drop anything (just because that's a rule in
+the original game).
+
+
+Let's therefore get off the bus so that we can get the egg and drop the lamp:
+% cat aWalkThroughOfHowTheBusWorks | sed -n 107,120p
+>i
+You currently have:
+A lamp
+A license
+A silver bar
+>exit
+You hop off the bus.
+>exit
+You can't go that way.
+>l
+Main-Oaktree intersection
+You are at the north end of Main Street and the west end of Oaktree Ave.
+There is a bus here.
+There is a jewel-encrusted egg here.
+
+Here we see that "exit" is how you get off the bus. And we see that you can't
+get off when you already are off, so the error is "You can't go that way." (You
+get the same message if you try to board the bus when it's somewhere else.)
+
+
+Now that we are off the bus, we can get the egg and drop the lamp, which we
+were not allowed to do when we were on the bus:
+% cat aWalkThroughOfHowTheBusWorks | sed -n 121,126p
+>get egg
+A valuable egg: Taken.
+>drop lamp
+Done.
+>board
+You board the bus and get in the driver's seat.
+
+
+OK, let's drive to the museum:
+% cat aWalkThroughOfHowTheBusWorks | sed -n 127,140p
+>s
+Main-Maple intersection
+>nw
+Museum entrance
+You are in front of the Museum of Natural History.  A door leads into
+the building to the north, and a road leads to the southeast.
+>n
+Museum lobby
+You are in the main lobby for the Museum of Natural History.  In the center
+of the room is the huge skeleton of a dinosaur.  Doors lead out to the
+south and east.
+There is a dinosaur bone here.
+>get bone
+You can't take anything while on the bus.
+
+Here we see that the bus has driven right into the museum. (As we've already
+stated, this bug will be fixed in the next homework.)
+
+
+Let's get off of the bus nd look around:
+% cat aWalkThroughOfHowTheBusWorks | sed -n 141,149p
+>exit
+You hop off the bus.
+>l
+Museum lobby
+You are in the main lobby for the Museum of Natural History.  In the center
+of the room is the huge skeleton of a dinosaur.  Doors lead out to the
+south and east.
+There is a dinosaur bone here.
+There is a bus here.
+
+
+OK. So now there is a bus and a bone. What happens if we "get all"?
+% cat aWalkThroughOfHowTheBusWorks | sed -n 150,$p
+>get all
+A bone: Taken.
+>l
+Museum lobby
+You are in the main lobby for the Museum of Natural History.  In the center
+of the room is the huge skeleton of a dinosaur.  Doors lead out to the
+south and east.
+There is a bus here.
+>get bus
+You cannot take that.
+>quit
+
+As we would expect, "get all" ignores the bus, and "get bus" gives an error."
+
+
+So now that we've learned how the bus works, there is one more complication.
+Let's learn how the bone works. To do this, let's look at the third provided
+walkthrough file. That walkthrough begins by typing "e,n,w,n,nw". We'll skip
+over that part and see what comes next:
+% cat aWalkThroughOfHowTheBoneWorks | sed -n 37,42p
+>n
+Museum lobby
+You are in the main lobby for the Museum of Natural History.  In the center
+of the room is the huge skeleton of a dinosaur.  Doors lead out to the
+south and east.
+There is a dinosaur bone here.
+
+First, let us notice that we got though the gate without the bus (for the same
+reason as stated before -- the next homework will fix this).
+
+
+So let's go over to the maintanence room and see the button that is there:
+% cat aWalkThroughOfHowTheBoneWorks | sed -n 43,56p
+>e
+Geological display
+You are in the geological display.  All of the objects that used to
+be on display are missing.  There are rooms to the east, west, and
+north.
+>e
+Maintenance room
+You are in some sort of maintenance room for the museum.  There is a
+switch on the wall labeled ‘BL’.  There are doors to the west and north.
+There is a packet of nitric acid here.
+> switch
+I see nothing special about that.
+>press switch
+The button is now in the on position.
+
+Oh. This switch (or button) must have done something. Actually, what it did
+was to turn on a "black light" (hence the label ‘BL’). This light is with the
+tanks of fish (I guess some of them glowed in the dark). 
+
+
+Let's see that:
+% cat aWalkThroughOfHowTheBoneWorks | sed -n 57,67p
+>w
+Geological display
+>n
+Marine life area
+You are in the marine life area.  The room is filled with fish tanks,
+which are filled with dead fish that have apparently died due to
+starvation.  Doors lead out to the south and east.
+The room is lit by a black light, causing the fish, and some of
+your objects, to give off an eerie glow.
+There is a glass jar here.
+There is a valuable ruby here.
+
+Here we see that there is a message about the black light. This message does
+not print if the switch is not pressed. We also note that the message says that
+some of your items have an eerie glow. This message matches the original game,
+but it is a lie, because the game gives this message even if you have no items
+in you inventory.
+
+Anyway, let's try re-entering the room and see what happens:
+% cat aWalkThroughOfHowTheBoneWorks | sed -n 68,76p
+>get all
+A glass jar: Taken.
+A ruby: Taken.
+>s
+Geological display
+>n
+Marine life area
+The room is lit by a black light, causing the fish, and some of
+your objects, to give off an eerie glow.
+
+Here we see that the message still appears, even in the short message.
+
+
+Alright now. Which object is supposed to glow? It is the bone:
+% cat aWalkThroughOfHowTheBoneWorks | sed -n 77,99p
+>s
+Geological display
+>w
+Museum lobby
+There is a dinosaur bone here.
+>x bone
+I see nothing special about that.
+>get bone
+A bone: Taken.
+>e
+Geological display
+>n
+Marine life area
+The room is lit by a black light, causing the fish, and some of
+your objects, to give off an eerie glow.
+>x bone
+In this light you can see some writing on the bone. It says:
+For an explosive time, go to Fourth St. and Vermont.
+>drop bone
+Done.
+>x bone
+In this light you can see some writing on the bone. It says:
+For an explosive time, go to Fourth St. and Vermont.
+
+
+But let's turn the light off again:
+% cat aWalkThroughOfHowTheBoneWorks | sed -n 100,106p
+>s
+Geological display
+>e
+Maintenance room
+There is a packet of nitric acid here.
+>press switch
+The button is now in the off position.
+
+Here we see that the button gives a different message when turned off.
+
+
+Let's play around with press a little:
+% cat aWalkThroughOfHowTheBoneWorks | sed -n 107,112p
+>press
+You must supply an object.
+>press acid
+You cannot press that.
+>switch acid
+You cannot press that.
+
+We see here you must supply an object. (get and drop also require an object.)
+We also see that the only object that can be pressed is the switch (it can also
+be called a "button", but the file name is "switch").
+We also see that the verb "switch" can be used instead of press. 
+
+
+Let's now revisit the bone and verify that it looks normal without the black
+light:
+% cat aWalkThroughOfHowTheBoneWorks | sed -n 113,$p
+>w
+Geological display
+>n
+Marine life area
+There is a dinosaur bone here.
+>x bone
+I see nothing special about that.
+>quit
+
+
+And so there you have it: a discussion of the three provided walkthroughs.
+Also, there also is something you don't have: the specific description of the 
+assignment details. I am making that description file, but I am posting this
+FIRST so that you can read it and understand it. Do not actually start coding
+the assignment until I give you more guidance.
